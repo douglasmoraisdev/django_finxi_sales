@@ -6,4 +6,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    url(r'^proc_state$', views.proc_state, name="proc_state"),
 ]

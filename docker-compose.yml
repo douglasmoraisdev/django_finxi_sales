@@ -2,13 +2,15 @@ version: '3'
 
 services:
  
+  redis:
+    image: redis
   db:
-    image: postgres
+    image: postgres    
   web:
     build: .
     command: >
-      bash -c "python3 manage.py migrate
-      && pip install -r requirements.txt
+      bash -c "pip install -r requirements.txt
+      && python3 manage.py migrate --noinput
       && python3 manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
@@ -16,3 +18,12 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - redis
+  celery:
+    build: .
+    depends_on:
+      - db
+      - redis
+    command: "celery -A finxi worker -l info"
+    volumes:
+      - .:/code
