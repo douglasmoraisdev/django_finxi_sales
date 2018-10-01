@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main {
+    flex: 1 0 auto;
+}
+nav {
+    background-color:#1a93b2;    
+}
+.page-footer {
+    background-color:#1a93b2;    
+}
+.tabs .tab a.active {
+     color: blue;
+}
+.tabs .indicator {
+    background-color: #1a93b2;
+}
+.tabs .tab a {
+    color: rgba(87, 161, 163, 0.7);
+}
+.progress .determinate {
+    background-color: blueviolet;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card form {
+    max-width: 100%;
+}

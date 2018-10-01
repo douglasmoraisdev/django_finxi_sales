@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>File Import</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static "materialize/css/materialize.min.css" %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.datatables.net/1.10.19/css/dataTables.material.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static "css/main.css" %}" />
+
+    
+    <script src="{% static "js/jquery.js" %}"></script>
+    <script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- NAV BAR -->
+    {% include 'default/nav.html' %}
+    <main>
+
+        <div class="center-align">
+            <div class="col s12">
+                <ul class="tabs">
+                <li class="tab col s3"><a class="active" href="#tab_import">File Import</a></li>
+                <li class="tab col s3"><a href="#tab_filter">Search filters</a></li>
+                </ul>
+            </div>
+            <div id="tab_import" class="col s12">
+                <div class="row"><div class="col s12"></div></div>
+                {% include 'file_import.html' %}
+            </div>
+            <div id="tab_filter" class="col s12">
+                <div class="row"><div class="col s12"></div></div>
+                {% include 'filter_sales.html' %}
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER BAR -->
+    {% include 'default/footer.html' %}
+
+</body>
+<script type="text/javascript" src="{% static "materialize/js/materialize.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/main.js" %}"></script>
+<script>
+
+    $(document).ready(function () {
+        $('.tabs').tabs();
+        $('select#company').formSelect();
+        $('select#category').formSelect();
+        $('#query_table').DataTable();
+
+        //setInterval('update_proc_status()', 500);
+    });
+
+</script>
+
+</html>
