@@ -2,3 +2,4 @@ Django>=2
 psycopg2-binary
 celery
 redis
+openpyxl

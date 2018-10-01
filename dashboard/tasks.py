@@ -8,6 +8,8 @@ from celery.decorators import task
 from celery import current_task
 from celery.utils.log import get_task_logger
 
+from dashboard.models import CategoryModel
+
 logger = get_task_logger(__name__)
 
 
@@ -24,16 +26,23 @@ def simulate_proc(self, percent):
 
     # a fake delay
     if (percent < 100):
-        sleep(5)
+        sleep(1)
 
 
-@task(name="some_proccess")
-def some_proccess(x):
-    """a mock proccess to simulate heavy load"""
-    logger.info("Some heavy proccess")
+@task(name="process_file")
+def process_file(uploaded_file):
+    logger.info("Start process file %s" % uploaded_file)
 
     # create a fake process
-    percent_list = [10, 20, 30, 60, 80, 100]
+    percent_list = [10, 30, 80, 100]
     reduce(simulate_proc, percent_list)
 
-    # return x # comment for return default 'SUCCESS'
+    '''
+    #it works - ok
+    category = CategoryModel()
+
+    category.name = 'new category'
+    category.save()
+    '''
+
+    return CategoryModel.objects.all().count()
