@@ -4,7 +4,7 @@ from dashboard.forms import FileImportForm
 
 
 class FileImportView(FormView):
-    template_name = "file_import.html"
+    template_name = "main.html"
     form_class = FileImportForm
     success_url = '/dashboard/filter'
 

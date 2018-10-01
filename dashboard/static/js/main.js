@@ -1,4 +1,7 @@
 function update_proc_status() {
+    /**
+     * Update file process status list
+     */
 
     // execute ajax for each active proc pid
     // look for proc_ids

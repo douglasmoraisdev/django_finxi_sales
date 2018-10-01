@@ -1,53 +1,38 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>File Import</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static " materialize/css/materialize.min.css" %}" />
-    <script src="{% static "js/jquery.js" %}"></script>
-    <script src=></script>
-</head>
-
-<body>
-
-    <h1>File Import</h1>
-
+<div class="row">
     <form action="/dashboard/import/" method="post" enctype="multipart/form-data">
+        
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Enviar">
-    </form>
+        <div class="row ">
 
-    <div id="errors">
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-            <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
+            <div class="col s1 l4"></div>
+            <div class="input-field col s8 l4">
+                <i class="material-icons prefix">business</i>
+                {{ form.company_name }}
+                <label for="id_company_name">Company Name</label>
             </div>
-            {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
+            <div class="col s3 l4"></div>
         </div>
-        {% endfor %}
-    {% endif %}
-    </div>
+        <div class="row">
 
-</body>
-<script type="text/javascript" src="{% static " materialize/js/materialize.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/main.js" %}"></script>
-<script>
-    $(document).ready(function () {
-        //setInterval('update_proc_status()', 500);
-    });
+            <div class="col s2 l4"></div>            
+            <div class="input-field col s8 l4">                   
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Upload a File</span>
+                        <input type="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="col l4"></div>
 
-</script>
+        </div>
 
-</html>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Enviar
+            <i class="material-icons right">send</i>
+        </button>        
+
+    </form>
+</div>
