@@ -23,8 +23,9 @@ services:
   celery:
     build: .
     depends_on:
-      - db
       - redis
-    command: "celery -A finxi worker -l info"
+    command: > 
+            bash -c "pip install -r requirements.txt
+            && celery -A finxi worker -l info"
     volumes:
       - .:/code

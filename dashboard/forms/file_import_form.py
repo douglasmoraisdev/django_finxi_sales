@@ -1,7 +1,7 @@
-from openpyxl import load_workbook
 from django import forms
-from dashboard.tasks import process_file
+from dashboard.tasks import ProcessFile
 
+from openpyxl import load_workbook
 
 class FileImportForm(forms.Form):
     company_name = forms.CharField(max_length=50)
@@ -23,7 +23,7 @@ class FileImportForm(forms.Form):
                             )
                         )
 
-        print(rows)
+        # print(rows)
         '''
         file_content = []
         for chunk in file_name.chunks():
@@ -31,7 +31,8 @@ class FileImportForm(forms.Form):
 
         print(file_content)
         '''
+        proc_file_task = ProcessFile()
+        proc_file_task.delay('desafio.xlsx')
 
         return True
-        # return process_file.delay(file_name)
         # return process_file.delay(file_name)
