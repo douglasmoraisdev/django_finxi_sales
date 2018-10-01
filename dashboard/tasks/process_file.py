@@ -31,7 +31,6 @@ class ProcessFile(Task):
             # a fake delay
             if (percent < 100):
                 sleep(1)
-        
 
         logger.info("Start process file %s" % uploaded_file)
 
@@ -39,14 +38,13 @@ class ProcessFile(Task):
         list_percents = (10, 20, 50, 80, 90, 100)
         reduce(simulate_proc, list_percents)
 
-        '''        
+        '''
         #it works - ok
         category = CategoryModel()
 
         category.name = 'new category'
         category.save()
         '''
-                
 
         return CategoryModel.objects.all().count()
 
