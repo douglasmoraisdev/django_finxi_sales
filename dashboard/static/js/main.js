@@ -101,10 +101,19 @@ function import_file(form) {
      * Handle Import Form Submit
      */
 
-    $('#import_preloader').removeClass("hide").addClass("show");
-
-    var formData = new FormData(form);
     
+    
+    $('#import_preloader').removeClass("hide").addClass("show");
+    
+    var formData = new FormData(form);
+    /** Validate inputs */
+
+    if ((form.sales_file.value == "") || (form.company_name.value == "")){
+        $('#import_preloader').removeClass("show").addClass("hide");
+        alert("Please, fill all fields!");
+        return
+    }
+
     $.ajax({
         url: "http://localhost:8000/dashboard/import/",
         type: 'POST',
