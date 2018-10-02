@@ -120,6 +120,7 @@ function import_file(form) {
         error: function (data) {
             var modal_fail = M.Modal.getInstance(import_fail_modal);
             modal_fail.open();
+            $('#import_preloader').removeClass("show").addClass("hide");
         },
         cache: false,
         contentType: false,
