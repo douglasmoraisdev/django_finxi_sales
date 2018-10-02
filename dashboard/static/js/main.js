@@ -95,7 +95,6 @@ function switch_filters(elem){
 
 }
     
-
 function import_file(form) {
     /**
      * Handle Import Form Submit
@@ -154,3 +153,46 @@ function refresh_proc_list(items){
     });
 
 }
+
+function search_filter(form) {
+    /**
+     * Handle Import Form Submit
+     */
+
+    
+    
+    $('#import_preloader').removeClass("hide").addClass("show");
+    
+    var formData = new FormData(form);
+    /** Validate inputs */
+
+    /*
+    if ((form.sales_file.value == "") || (form.company_name.value == "")){
+        $('#import_preloader').removeClass("show").addClass("hide");
+        alert("Please, fill all fields!");
+        return
+    }
+    */
+
+    $.ajax({
+        url: "http://localhost:8000/dashboard/filter/",
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+
+            //$('#data_table').html(data);
+
+            $('#query_table').DataTable( {
+                "ajax": data
+            } );            
+
+        },
+        error: function (data) {
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    });
+    
+
+};
