@@ -11,7 +11,7 @@ class FileImportForm(forms.Form):
     company_name = forms.CharField(max_length=50)
     sales_file = forms.FileField()
 
-    def process_file(self, file_name):
+    def process_file(self, file_name, company_name):
         # create a temp_file name
         temp_file = tempfile.NamedTemporaryFile(dir='/code', suffix='.xlsx')
         temp_file_name = temp_file.name
@@ -23,6 +23,6 @@ class FileImportForm(forms.Form):
                 destination.write(chunk)
 
         proc_file_task = ProcessFile()
-        proc_file_task.delay(temp_file_name)
+        proc_file_task.delay(temp_file_name, company_name)
 
         return True
