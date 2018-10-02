@@ -33,10 +33,29 @@
 
         </div>
 
-        <button onclick="import_file(import_form)" class="btn waves-effect waves-light" type="button" 
-            name="action">Import
-            <i class="material-icons right">file_upload</i>
-        </button>        
+        <div class="row">
+            <button onclick="import_file(import_form)" class="btn waves-effect waves-light" type="button" 
+                name="action">Import
+                <i class="material-icons right">file_upload</i>
+            </button>
+        </div>
+        
+        <!-- Upload Preloader-->
+        <div class="row">        
+            <div class="preloader-wrapper small active hide" id="import_preloader">
+                <div class="spinner-layer spinner-green-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </form>
 </div>

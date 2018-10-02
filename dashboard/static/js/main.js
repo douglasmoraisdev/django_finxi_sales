@@ -101,6 +101,8 @@ function import_file(form) {
      * Handle Import Form Submit
      */
 
+    $('#import_preloader').removeClass("hide").addClass("show");
+
     var formData = new FormData(form);
     
     $.ajax({
@@ -112,6 +114,7 @@ function import_file(form) {
             var modal_success = M.Modal.getInstance(import_success_modal);
             modal_success.open();
             refresh_proc_list(data.proc_data);
+            $('#import_preloader').removeClass("show").addClass("hide");
 
         },
         error: function (data) {
