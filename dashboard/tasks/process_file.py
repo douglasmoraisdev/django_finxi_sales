@@ -94,9 +94,9 @@ class ProcessFile(Task):
         rows = []
         for cells in sheet_ranges:
 
+            # verify cost_price is a number
             cost_price = cells[3].value.replace('R$ ', '')\
                                        .replace(',','.')
-            # verify cost_price is a number
             try:
                 if cost_price:
                     cost_price = float(cost_price)
@@ -105,12 +105,34 @@ class ProcessFile(Task):
             except ValueError:
                 cost_price = 0
 
+            # verify total_sold is a number
+            total_sold = cells[4].value.replace('R$ ', '')\
+                                       .replace(',','.')
+            try:
+                if total_sold:
+                    total_sold = float(total_sold)
+                else:
+                    total_sold = 0
+            except ValueError:
+                total_sold = 0
+
+            # verify units_sold is a number
+            units_sold = cells[2].value
+            try:
+                if units_sold:
+                    units_sold = int(units_sold)
+                else:
+                    units_sold = 0
+            except ValueError:
+                units_sold = 0                
+
+
             # create a serialized dict
             rows.append(dict(product=cells[0].value,
                                 category=cells[1].value,
-                                units_sold=cells[2].value,
+                                units_sold=units_sold,
                                 cost_price=cost_price,
-                                total_sold=cells[4].value,
+                                total_sold=total_sold,
                                 )
                         )     
         
@@ -128,7 +150,7 @@ class ProcessFile(Task):
             company = company
 
 
-        
+
         # filter unique category        
         all_categories = []
         for items in rows:
@@ -153,10 +175,12 @@ class ProcessFile(Task):
 
                     product_name = items['product']
                     cost_price = items['cost_price']
+                    units_sold = items['units_sold']
+                    total_sold = items['total_sold']
 
-                    # update if not exists
+                    # update product if not exists
                     if not ProductModel.objects.filter(name=product_name, category__name=cat).exists():
-                        print('Adding Product %s' % product_name)
+                        # print('Adding Product %s' % product_name)
                         
                         product = ProductModel()
                         product.name = str(product_name)
@@ -164,10 +188,29 @@ class ProcessFile(Task):
                         product.category = category
                         product.save()
                         product_id = product.id
+                    else:
+                        product = ProductModel.objects.get(name=product_name, category__name=cat)
+                        product_id = product.id
+
+                    # update sales
+
+                    # update sales if not exists
+                    #if not SalesModel.objects.filter(product=product).exists():
+                    # print('Added Sale %s' % product)
+                    sales = SalesModel()
+                    sales.product = product
+                    sales.unit_sales = units_sold
+                    sales.sale_total = total_sold
+                    sales.save()
+                    sales_id = sales.id
+
+
+
 
         print('Total added company %d' % CompanyModel.objects.all().count())
         print('Total added categories %d' % CategoryModel.objects.all().count())
         print('Total added product %d' % ProductModel.objects.all().count())
+        print('Total added sales %d' % SalesModel.objects.all().count())
         print('---')
 
         return True
