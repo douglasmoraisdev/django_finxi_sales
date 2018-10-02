@@ -1,27 +1,20 @@
 <footer class="page-footer">
+
+    <!-- Hidden list of the Process Queue -->
+    <ul id="proc_queue" class="hide">
+        
+    </ul>
+
+
     <div class="container">
         <div class="row">
-        <div class="col l4 offset-l2 s12">
+        <div class="col l8 offset-l2 s12" id="proc_queue_footer">
             <h5 class="white-text">Process Queue</h5>
-            <ul>
-                <li>Processing File 'Desafio.xslx'...
-                    <div class="progress">
-                            <div class="determinate" style="width: 70%"></div>
-                    </div>                
-                </li>
-                <li>Processing File 'Desafio.xslx'...
-                    <div class="progress">
-                            <div class="determinate" style="width: 10%"></div>
-                    </div>                
-                </li>
-                <li>Processing File 'Desafio.xslx'...
-                    <div class="progress">
-                            <div class="determinate" style="width: 30%"></div>
-                    </div>                
-                </li>
-
+            <p id="no_files_queue">No files in process queue</p>
+            <ul id="process_status_list">
 
             </ul>
+
         </div>
         </div>
     </div>

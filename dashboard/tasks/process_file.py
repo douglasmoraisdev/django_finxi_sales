@@ -20,23 +20,27 @@ class ProcessFile(Task):
     # @task(name="ProcessFile")
     def run(self, uploaded_file):
 
-        def simulate_proc(self, percent):
+        def simulate_proc(percent, filename):
             """Simulate a heavy proccess"""
             # update task progress state
             current_task.update_state(state='PROGRESS',
-                                    meta={'current': percent,
-                                            'total': 100
+                                      meta={'current': percent,
+                                            'total': 100,
+                                            'filename': filename
                                             })
-            logger.info("percent %s" % percent)
+            logger.info("[%s]percent %s" % (filename, percent))
             # a fake delay
             if (percent < 100):
                 sleep(1)
 
         logger.info("Start process file %s" % uploaded_file)
 
-        # create a fake process
-        list_percents = (10, 20, 50, 80, 90, 100)
-        reduce(simulate_proc, list_percents)
+        # create a fake heavy process
+        simulate_proc(10, uploaded_file)
+        simulate_proc(30, uploaded_file)
+        simulate_proc(60, uploaded_file)
+        simulate_proc(90, uploaded_file)
+        simulate_proc(100, uploaded_file)
 
         '''
         #it works - ok

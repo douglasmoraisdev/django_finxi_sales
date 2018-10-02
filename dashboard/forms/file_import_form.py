@@ -36,4 +36,3 @@ class FileImportForm(forms.Form):
         proc_file_task.delay('desafio.xlsx')
 
         return True
-        # return process_file.delay(file_name)

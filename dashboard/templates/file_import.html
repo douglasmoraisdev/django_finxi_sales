@@ -22,7 +22,7 @@
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>Upload a File</span>
-                        <input id="sales_file" name="sales_file" type="file">
+                        <input id="sales_file" name="sales_file" type="file" accept=".xls,.xlsx">
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
@@ -57,6 +57,16 @@
     <div class="modal-content">
         <h4>File uploaded failfully</h4>
         <p>A wild Error appers</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+    </div>
+</div>
+
+<div id="import_complete_modal" class="modal">
+    <div class="modal-content">
+        <h4>File processed!</h4>
+        <p id="import_complete_message">The file 'Desafio.xlsx' was successfully processed and are ready to query</p>
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>

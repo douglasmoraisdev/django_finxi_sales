@@ -1,4 +1,6 @@
 from django.views.generic.edit import FormView
+from django.http import JsonResponse
+from celery.task.control import inspect
 
 from dashboard.forms import FileImportForm
 
@@ -22,7 +24,22 @@ class FileImportView(FormView):
 
     def form_valid(self, form):
 
-        return super().form_valid(form)
+        task_inspect = inspect()
+
+        for keys in task_inspect.active().keys():
+            active_tasks = task_inspect.active()[keys]
+            next_tasks = task_inspect.reserved()[keys]
+
+        proc_list = []
+
+        # get 'id' and 'args'(filename) attribute from tasks lists
+        proc_list = list(map(lambda x: x['id'], active_tasks + next_tasks))
+
+        result = dict(proc_data=proc_list)
+
+        return JsonResponse(result)
+
+        # return super().form_valid(form)
 
     def form_invalid(self, form):
         response = super().form_invalid(form)

@@ -4,58 +4,72 @@ function update_proc_status() {
      */
 
     // execute ajax for each active proc pid
-    // look for proc_ids
-    $("#proc_ids li").each(function (index, element) {
-
+    // look for proc_queue
+    $("#process_status_list").removeClass("show").addClass("hide");
+    $("#no_files_queue").removeClass("hide").addClass("show");
+    
+    $("#proc_queue li").each(function (index, element) {
+        
         let pid = $(element).text();
+        
+        $("#process_status_list").removeClass("hide").addClass("show");
+        $("#no_files_queue").removeClass("show").addClass("hide");
+
 
         $.ajax({
             type: "GET",
             url: "http://localhost:8000/dashboard/proc_state?job=" + pid,
             success: function (msg) {
 
-                //$("#process_status_list li#"+pid).remove();
-
                 let json_msg = JSON.parse(msg);
                 let id = json_msg.id;
                 let status = json_msg.status;
-                let status_message = '';
+                let filename = $("#proc_queue li#"+id).attr('name'); //get from item list queue
+ 
+                let search_li = $("#process_status_list li#" + pid);
+                    
+                let percent = status.current;
 
                 // Success or Pending
                 if (typeof status === 'string' || status instanceof String) {
-                    status_message = status;
 
                     // remove from query list
                     if (status == 'SUCCESS') {
-                        $("#proc_ids li#" + pid).remove();
+                        $("#proc_queue li#" + pid).remove();
+                        percent = 100;
+
+                        var modal_complete = M.Modal.getInstance(import_complete_modal);
+                        $('#import_complete_message').html('A new file was proccessed succefully!')
+                        modal_complete.open();
+                        $("#" + pid).remove();
                     }
 
-                } else {
-                    status_message = status.current + '/' + status.total;
-                }
-
-                let search_li = $("#process_status_list li#" + pid);
+                }                
 
                 if (search_li.length > 0) {
 
+                    
                     $(search_li).html(
-                        '<li id=' + id + '>\
-                            <span class="tab">Proc id: '+ id + '</span>\
-                            <span class="tab">Status: '+ status_message + '</span>\
-                        </li>'
+                        "<li id=" + id + ">Processing File '" + filename + "'...\
+                            <div class='progress'>\
+                                <div class='determinate' style='width: "+ percent + "%'></div>\
+                            </div>\
+                        </li>"
                     );
 
 
                 } else {
 
                     $("#process_status_list").append(
-                        '<li id=' + id + '>\
-                            <span class="tab">Proc id: '+ id + '</span>\
-                            <span class="tab">Status: '+ status_message + '</span>\
-                        </li>'
+                        "<li id=" + id + ">Processing File '" + filename + "'...\
+                            <div class='progress'>\
+                                <div class='determinate' style='width: "+ percent + "%'></div>\
+                            </div>\
+                        </li>"
                     );
 
                 }
+            
 
                 console.log(msg);
             }
@@ -93,9 +107,12 @@ function import_file(form) {
         url: "http://localhost:8000/dashboard/import/",
         type: 'POST',
         data: formData,
+        dataType: 'json',
         success: function (data) {
             var modal_success = M.Modal.getInstance(import_success_modal);
             modal_success.open();
+            refresh_proc_list(data.proc_data);
+
         },
         error: function (data) {
             var modal_fail = M.Modal.getInstance(import_fail_modal);
@@ -108,3 +125,19 @@ function import_file(form) {
     
 
 };
+
+function refresh_proc_list(items){
+
+    $("#proc_queue").html("");
+
+    $(items).each(function(index, item){
+
+        console.log('appending ' + item);
+
+        $("#proc_queue").append(
+            '<li id="' + item + '" name="' + item + '">' + item + '</li>'
+        );
+
+    });
+
+}
