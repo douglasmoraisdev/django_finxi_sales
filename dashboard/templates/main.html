@@ -54,8 +54,14 @@
     $(document).ready(function () {
         $('.tabs').tabs();
         $('select#company').formSelect();
-        $('select#category').formSelect();
-        $('#query_table').DataTable();
+        $('select#category_name').formSelect();
+        $('#query_table').DataTable({
+            searching: false,
+        });
+
+        $('#import_success_modal').modal();
+        $('#import_fail_modal').modal();
+
 
         //setInterval('update_proc_status()', 500);
     });

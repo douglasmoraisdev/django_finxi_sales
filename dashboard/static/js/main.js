@@ -63,3 +63,48 @@ function update_proc_status() {
 
     })
 }
+
+function switch_filters(elem){
+    /**
+     * Turn on/off a filter input
+     */
+
+    let target = $(elem).attr('target');
+
+    /** Set enabled/disabled to a element */
+    $('#'+target).prop("disabled", !($(elem).prop("checked")));    
+
+    /** Reset the Materialized Select if any */
+    if ( $('#'+target).prop('nodeName') == 'SELECT'){
+        $('#'+target).formSelect();
+    }
+
+}
+    
+
+function import_file(form) {
+    /**
+     * Handle Import Form Submit
+     */
+
+    var formData = new FormData(form);
+    
+    $.ajax({
+        url: "http://localhost:8000/dashboard/import/",
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            var modal_success = M.Modal.getInstance(import_success_modal);
+            modal_success.open();
+        },
+        error: function (data) {
+            var modal_fail = M.Modal.getInstance(import_fail_modal);
+            modal_fail.open();
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    });
+    
+
+};

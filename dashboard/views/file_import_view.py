@@ -6,7 +6,7 @@ from dashboard.forms import FileImportForm
 class FileImportView(FormView):
     template_name = "main.html"
     form_class = FileImportForm
-    success_url = '/dashboard/filter'
+    success_url = '/dashboard/#tab_filter'
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
@@ -20,7 +20,7 @@ class FileImportView(FormView):
         else:
             return self.form_invalid(form)
 
-    def form_valid(self, form):        
+    def form_valid(self, form):
 
         return super().form_valid(form)
 

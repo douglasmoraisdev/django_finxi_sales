@@ -3,6 +3,7 @@ from dashboard.tasks import ProcessFile
 
 from openpyxl import load_workbook
 
+
 class FileImportForm(forms.Form):
     company_name = forms.CharField(max_length=50)
     sales_file = forms.FileField()
@@ -10,17 +11,17 @@ class FileImportForm(forms.Form):
     def process_file(self, file_name):
         # a simple anti spam filter
 
-        wb = load_workbook(filename = file_name)
+        wb = load_workbook(filename=file_name)
         sheet_ranges = wb['Sheet1']
 
         rows = []
         for cells in sheet_ranges:
             rows.append(dict(product=cells[0].value,
-                            category=cells[1].value,
-                            units_sold=cells[2].value,
-                            cost_price=cells[3].value,
-                            total_sale=cells[4].value,
-                            )
+                             category=cells[1].value,
+                             units_sold=cells[2].value,
+                             cost_price=cells[3].value,
+                             total_sale=cells[4].value,
+                             )
                         )
 
         # print(rows)
