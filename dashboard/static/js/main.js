@@ -166,7 +166,42 @@ function refresh_company_list(){
         type: 'GET',
         success: function (data) {
             $('#company_select').html(data);
-            $('select#company').formSelect();            
+            $('select#company').formSelect();
+
+            $('select#company').on('change', function(obj) {
+                let id_company = $('select#company').val();
+                console.log($('select#company').val());
+                if (id_company != 'undefined'){
+                    /** Show filter options */
+                    $('#info_select_company').removeClass("show").addClass("hide");
+                    $('#row_product').removeClass("hide").addClass("show");
+                    $('#row_category').removeClass("hide").addClass("show");
+
+                    refresh_category_list(id_company);
+                }
+            });
+
+        },
+        error: function (data) {
+            alert('A wild error appear');
+            $('#data_table_preloader').removeClass("show").addClass("hide");
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    });
+
+};
+
+function refresh_category_list(company){
+
+    $.ajax({
+        url: "http://localhost:8000/dashboard/category_list?company="+company,
+        type: 'GET',
+        success: function (data) {
+            $('#category_select').html(data);
+            $('select#category').formSelect();
+
         },
         error: function (data) {
             alert('A wild error appear');
@@ -214,7 +249,7 @@ function search_filter(form) {
     /** Validate inputs */
     let formValid = true;
     if (form.company.value == ""){
-        $('#import_preloader').removeClass("show").addClass("hide");       
+        $('#data_table_preloader').removeClass("show").addClass("hide");       
         $('#company_empty').removeClass("valid").addClass("invalid");
 
         alert('Please, select a company')

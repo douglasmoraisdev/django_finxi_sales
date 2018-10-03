@@ -8,10 +8,13 @@
             <!-- Company refresh loads here via ajax -->
         </div>
         <div class="col s3 l4"></div>
+
     </div>
+    <p id="info_select_company" class="center-align">Select a Company first</p>            
 
     <!-- Product Filter -->
-    <div class="row">
+
+    <div id="row_product" class="row hide">
         <div class="col s1 l4"></div>
 
         <div class="input-field col s3 l3">
@@ -31,18 +34,11 @@
     </div>
 
     <!-- Category Filter -->
-    <div class="row">
+    <div id="row_category" class="row hide">
 
         <div class="col s1 l4"></div>
-        <div class="input-field col s3 l3">
-            <select id="category" name="category" class="validate" multiple required>
-                <option value="" disabled>Choose your option</option>
-                <option value="1">Pantufas</option>
-                <option value="2">Shorts</option>
-                <option value="3">Babadores</option>
-                <option value="4">Conjunto</option>
-            </select>
-            <label>Select Categories</label>
+        <div id="category_select" class="input-field col s3 l3">
+            <!-- Category List refresh loads here via ajax -->
         </div>
 
         <!-- active on/off category filter -->
@@ -74,7 +70,7 @@
         <h2>Results:</h2>
         <div class="col l1"></div>
         <div class="col l10" id="data_table">
-
+            <!-- Datatable refresh loads here via ajax -->
         </div>
 
         <div class="col l1"></div>    

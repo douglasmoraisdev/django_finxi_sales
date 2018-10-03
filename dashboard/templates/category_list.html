@@ -1,0 +1,9 @@
+<select id="category" name="category" class="validate" multiple required>
+        <option value="" disabled>Select categories</option>
+        {% for category in object_list %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+        {% empty %}
+            <option value="" disabled>No Categories found for selected Company</option>
+        {% endfor %}
+</select>
+<label>Select Categories</label>
