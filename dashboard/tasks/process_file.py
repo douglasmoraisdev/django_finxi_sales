@@ -90,18 +90,17 @@ class ProcessFile(Task):
                 else:
                     units_sold = 0
             except ValueError:
-                units_sold = 0                
-
+                units_sold = 0
 
             # create a serialized dict
             rows.append(dict(product=cells[0].value,
-                                category=cells[1].value,
-                                units_sold=units_sold,
-                                cost_price=cost_price,
-                                total_sold=total_sold,
-                                )
+                             category=cells[1].value,
+                             units_sold=units_sold,
+                             cost_price=cost_price,
+                             total_sold=total_sold,
+                             )
                         )     
-        
+
         # simulate_proc(30, uploaded_file)
 
         # start process to DB
@@ -115,9 +114,7 @@ class ProcessFile(Task):
             company.save()
             company = company
 
-
-
-        # filter unique category        
+        # filter unique category
         all_categories = []
         for items in rows:
             all_categories.append(items['category'])
@@ -125,7 +122,8 @@ class ProcessFile(Task):
 
         # update categories
         for cat in filtered_category:
-            if CategoryModel.objects.filter(name=cat, company=company).exists():
+            if CategoryModel.objects.filter(name=cat, company=company)\
+                                     .exists():
                 category_id = CategoryModel.objects.get(name=cat).id
             else:
                 category = CategoryModel()
@@ -145,9 +143,11 @@ class ProcessFile(Task):
                     total_sold = items['total_sold']
 
                     # update product if not exists
-                    if not ProductModel.objects.filter(name=product_name, category__name=cat).exists():
+                    if not ProductModel.objects.filter(name=product_name,
+                                                       category__name=cat)\
+                                               .exists():
+
                         # print('Adding Product %s' % product_name)
-                        
                         product = ProductModel()
                         product.name = str(product_name)
                         product.cost_price = cost_price
@@ -155,13 +155,14 @@ class ProcessFile(Task):
                         product.save()
                         product_id = product.id
                     else:
-                        product = ProductModel.objects.get(name=product_name, category__name=cat)
+                        product = ProductModel.objects.get(name=product_name,
+                                                           category__name=cat)
                         product_id = product.id
 
                     # update sales
 
                     # update sales if not exists
-                    #if not SalesModel.objects.filter(product=product).exists():
+                    # if not SalesModel.objects.filter(product=product).exists():
                     # print('Added Sale %s' % product)
                     sales = SalesModel()
                     sales.product = product
@@ -169,9 +170,6 @@ class ProcessFile(Task):
                     sales.sale_total = total_sold
                     sales.save()
                     sales_id = sales.id
-
-
-
 
         print('Total added company %d' % CompanyModel.objects.all().count())
         print('Total added categories %d' % CategoryModel.objects.all().count())

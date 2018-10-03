@@ -1,16 +1,27 @@
-<tbody>
-    {% for item in data %}
+<table id="query_table" class="responsive-table">
+    <thead>
         <tr>
-            <td>{{ data.product }}</td>
-            <td>{{ data.price }}</td>
-            <td>100%</td>
+            <th>Name</th>
+            <th>Item Name</th>
+            <th>Item Price</th>
         </tr>
-    {% endfor %}
-    <!--
-    <tr>
-        <td>Alvin</td>
-        <td>Eclair</td>
-        <td>$0.87</td>
-    </tr>
-    --->
-</tbody>
+    </thead>
+
+    <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.product }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+<script>
+    $('#query_table').DataTable({
+        retrieve: true,
+        searching: false,
+    });
+</script>

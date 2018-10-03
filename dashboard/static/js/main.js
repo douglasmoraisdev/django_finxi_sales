@@ -76,7 +76,7 @@ function update_proc_status() {
         });
 
     })
-}
+};
 
 function switch_filters(elem){
     /**
@@ -93,7 +93,7 @@ function switch_filters(elem){
         $('#'+target).formSelect();
     }
 
-}
+};
     
 function import_file(form) {
     /**
@@ -152,7 +152,7 @@ function refresh_proc_list(items){
 
     });
 
-}
+};
 
 function search_filter(form) {
     /**
@@ -180,12 +180,10 @@ function search_filter(form) {
         data: formData,
         success: function (data) {
 
-            //$('#data_table').html(data);
+            console.log(data);
 
-            $('#query_table').DataTable( {
-                "ajax": data
-            } );            
-
+            $('#data_table').html(data);
+  
         },
         error: function (data) {
         },
