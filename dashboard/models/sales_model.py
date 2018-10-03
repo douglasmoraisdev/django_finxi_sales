@@ -36,7 +36,7 @@ class SalesManager(models.Manager):
     def _get_sales_by_product(self, company, product_name):
 
         return self._apply_sales_aggregations(self._default_company_filter(company)\
-                                              .filter(product__name=product_name))
+                                              .filter(product__name__contains=product_name))
 
     def _get_sales_by_category(self, company, category_name):
 
@@ -46,7 +46,7 @@ class SalesManager(models.Manager):
     def _get_sales_by_product_category(self, company, product_name, category_name):
 
         return self._apply_sales_aggregations(self._default_company_filter(company)\
-                                              .filter(product__name=product_name)\
+                                              .filter(product__name__contains=product_name)\
                                               .filter(product__category__in=category_name))
 
     def _default_company_filter(self, company):
