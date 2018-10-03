@@ -30,40 +30,32 @@ class SalesManager(models.Manager):
             return self._get_sales_by_company(company)
 
     def _get_sales_by_company(self, company):
-        return super().get_queryset().filter(product__category__company=company)\
-                                             .values('product__name')\
-                                             .annotate(total_sold=models.Sum('unit_sales'))\
-                                             .annotate(avg_sales=models.Avg('sale_total'))\
-                                             .annotate(avg_cost=models.Avg('product__cost_price'))        
+
+        return self._apply_sales_aggregations(self._default_company_filter(company))
 
     def _get_sales_by_product(self, company, product_name):
-        return super().get_queryset().filter(product__category__company=company,
-                                             product__name=product_name)\
-                                             .values('product__name')\
-                                             .annotate(total_sold=models.Sum('unit_sales'))\
-                                             .annotate(avg_sales=models.Avg('sale_total'))\
-                                             .annotate(avg_cost=models.Avg('product__cost_price'))
+
+        return self._apply_sales_aggregations(self._default_company_filter(company)\
+                                              .filter(product__name=product_name))
 
     def _get_sales_by_category(self, company, category_name):
-        return super().get_queryset().filter(product__category__company=company,
-                                             product__category__in=category_name)\
-                                             .values('product__name')\
-                                             .annotate(total_sold=models.Sum('unit_sales'))\
-                                             .annotate(avg_sales=models.Avg('sale_total'))\
-                                             .annotate(avg_cost=models.Avg('product__cost_price'))
 
-    def _get_sales_by_product_category(self, company,
-                                       product_name, category_name):
-        return super().get_queryset().filter(product__category__company=company,
-                                             product__name=product_name,
-                                             product__category__in=category_name)\
-                                             .values('product__name')\
-                                             .annotate(total_sold=models.Sum('unit_sales'))\
-                                             .annotate(avg_sales=models.Avg('sale_total'))\
-                                             .annotate(avg_cost=models.Avg('product__cost_price'))
+        return self._apply_sales_aggregations(self._default_company_filter(company)\
+                                              .filter(product__category__in=category_name))
 
-    def get_queryset(self):
-        return super().get_queryset().all()
+    def _get_sales_by_product_category(self, company, product_name, category_name):
+        return self._apply_sales_aggregations(self._default_company_filter(company)\
+                                              .filter(product__name=product_name)\
+                                              .filter(product__category__in=category_name))
+
+    def _default_company_filter(self, company):
+        return super().get_queryset().filter(product__category__company=company)
+
+    def _apply_sales_aggregations(self, query_set):
+        return query_set.values('product__name')\
+                        .annotate(total_sold=models.Sum('unit_sales'))\
+                        .annotate(avg_sales=models.Avg('sale_total'))\
+                        .annotate(avg_cost=models.Avg('product__cost_price'))
 
 
 class SalesModel(models.Model):
