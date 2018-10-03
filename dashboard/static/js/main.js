@@ -38,6 +38,9 @@ function update_proc_status() {
                         $("#proc_queue li#" + pid).remove();
                         percent = 100;
 
+                        /** Refresh company filter */
+                        refresh_company_list();
+
                         var modal_complete = M.Modal.getInstance(import_complete_modal);
                         $('#import_complete_message').html('A new file was proccessed succefully!')
                         modal_complete.open();
@@ -131,9 +134,15 @@ function import_file(form) {
         data: formData,
         dataType: 'json',
         success: function (data) {
+
+            /** Show success Modal */
             var modal_success = M.Modal.getInstance(import_success_modal);
             modal_success.open();
+
+            /** Refresh the process list queue */
             refresh_proc_list(data.proc_data);
+
+            /** Hide preloader */
             $('#import_preloader').removeClass("show").addClass("hide");
 
         },
@@ -147,6 +156,26 @@ function import_file(form) {
         processData: false,
     });
     
+
+};
+
+function refresh_company_list(){
+
+    $.ajax({
+        url: "http://localhost:8000/dashboard/company_list",
+        type: 'GET',
+        success: function (data) {
+            $('#company_select').html(data);
+            $('select#company').formSelect();            
+        },
+        error: function (data) {
+            alert('A wild error appear');
+            $('#data_table_preloader').removeClass("show").addClass("hide");
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    });
 
 };
 

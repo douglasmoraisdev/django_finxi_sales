@@ -1,0 +1,11 @@
+<select id="company" name="company" class="validate invalid" required>
+    <option value="" disabled selected>Select a company</option>
+    {% for company in object_list %}
+        <option value="{{ company.id }}">{{ company.name }}</option>
+    {% empty %}
+        <option value="" disabled selected>No companies yet</option>
+
+    {% endfor %}
+</select>
+<label>Select a Company</label>
+<span class="helper-text" data-error="Please fill this field" data-success="">Mandatory</span>
