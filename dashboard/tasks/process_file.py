@@ -34,7 +34,7 @@ class ProcessFile(Task):
             logger.info("[%s]percent %s" % (filename, percent))
             # a fake delay
             if (percent < 100):
-                sleep(1)
+                sleep(2)
 
         logger.info("Start process file %s" % uploaded_file)
 
@@ -174,7 +174,7 @@ class ProcessFile(Task):
         print('Total added company %d' % CompanyModel.objects.all().count())
         print('Total added categories %d' % CategoryModel.objects.all().count())
         print('Total added product %d' % ProductModel.objects.all().count())
-        print('Total added sales %d' % SalesModel.objects.all().count())
+        print('Total added sales %d' % SalesModel.manager.all().count())
         print('---')
 
         return True
