@@ -7,11 +7,9 @@ from time import sleep
 from celery.decorators import task
 from celery import current_task, Task
 from celery.utils.log import get_task_logger
-
 from dashboard.models import CompanyModel, CategoryModel,\
                              ProductModel, SalesModel
 from openpyxl import load_workbook
-
 
 from finxi.celery import app as celery_app
 
@@ -23,35 +21,35 @@ class ProcessFile(Task):
 
     def run(self, uploaded_file, company_name):
 
-        def simulate_proc(percent, filename):
-            """Simulate a heavy proccess"""
-            # update task progress state
-            current_task.update_state(state='PROGRESS',
-                                      meta={'current': percent,
-                                            'total': 100,
-                                            'filename': filename
-                                            })
-            logger.info("[%s]percent %s" % (filename, percent))
-            # a fake delay
-            if (percent < 100):
-                sleep(2)
-
         logger.info("Start process file %s" % uploaded_file)
-
-        simulate_proc(30, uploaded_file)        
-        simulate_proc(60, uploaded_file)
-        simulate_proc(90, uploaded_file)
-        simulate_proc(100, uploaded_file)
 
         self.update_db(uploaded_file, company_name)
 
         return 'SUCCESS'
 
+    def update_status(self, percent, filename):
+        """Update task progress state"""
+        
+        current_task.update_state(state='PROGRESS',
+                                    meta={'current': percent,
+                                        'total': 100,
+                                        'filename': filename
+                                        })
+
+        logger.info("[%s]percent %s" % (filename, percent))
+        
+        # a fake delay for test progressbars
+        # uncomment this for simulate hard process
+        '''
+        if (percent < 100):
+            sleep(2)
+        '''
+
     def update_db(self, uploaded_file, company_name):
 
         # Reads a xslx file
         wb = load_workbook(filename=uploaded_file)
-        # simulate_proc(10, uploaded_file)
+        self.update_status(10, uploaded_file)
 
         # get the Sheet1 data
         sheet_ranges = wb['Sheet1']
@@ -78,8 +76,6 @@ class ProcessFile(Task):
                     (str(cells[3].value).strip() == '') or
                     (str(cells[4].value).strip() == '')):
                 continue
-
-
 
             # verify cost_price is a number
             cost_price = cells[3].value.replace('R$ ', '')\
@@ -122,9 +118,8 @@ class ProcessFile(Task):
                              )
                         )     
 
-        # simulate_proc(30, uploaded_file)
-
         # start process to DB
+        self.update_status(20, uploaded_file)
 
         # get company id or create one
         if CompanyModel.objects.filter(name=company_name).exists():
@@ -141,8 +136,15 @@ class ProcessFile(Task):
             all_categories.append(items['category'])
         filtered_category = set(all_categories)
 
+        self.update_status(30, uploaded_file)
         # update categories
-        for cat in filtered_category:
+        count_category = len(filtered_category)
+        for i,cat in enumerate(filtered_category):
+            
+            # update process status
+            percent_status = int(100/count_category+i+30)+30
+            self.update_status(percent_status, uploaded_file)
+
             if CategoryModel.objects.filter(name=cat, company=company)\
                                      .exists():
                 category_id = CategoryModel.objects.get(name=cat, company=company).id
@@ -191,11 +193,7 @@ class ProcessFile(Task):
                     sales.save()
                     sales_id = sales.id
 
-        print('Total added company %d' % CompanyModel.objects.all().count())
-        print('Total added categories %d' % CategoryModel.objects.all().count())
-        print('Total added product %d' % ProductModel.objects.all().count())
-        print('Total added sales %d' % SalesModel.manager.all().count())
-        print('---')
+        self.update_status(100, uploaded_file)
 
         return True
 
