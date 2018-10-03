@@ -23,7 +23,8 @@ class ProcessFile(Task):
 
         logger.info("Start process file %s" % uploaded_file)
 
-        self.update_db(uploaded_file, company_name)
+        rows_data = self.load_file_rows(uploaded_file)
+        self.update_db(rows_data, uploaded_file, company_name)
 
         return 'SUCCESS'
 
@@ -45,8 +46,7 @@ class ProcessFile(Task):
             sleep(2)
         '''
 
-    def update_db(self, uploaded_file, company_name):
-
+    def load_file_rows(self, uploaded_file):
         # Reads a xslx file
         wb = load_workbook(filename=uploaded_file)
         self.update_status(10, uploaded_file)
@@ -116,7 +116,13 @@ class ProcessFile(Task):
                              cost_price=cost_price,
                              total_sold=total_sold,
                              )
-                        )     
+                        )
+        return rows
+
+    def update_db(self, file_rows, uploaded_file, company_name):
+     
+        # get file rows data
+        rows = file_rows
 
         # start process to DB
         self.update_status(20, uploaded_file)
