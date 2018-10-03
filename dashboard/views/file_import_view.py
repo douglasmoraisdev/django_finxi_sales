@@ -19,7 +19,8 @@ class FileImportView(FormView):
 
         if form.is_valid():
 
-            form.process_file(file, company_name)
+            if not form.process_file(file, company_name):
+                return self.form_invalid(form)
 
             return self.form_valid(form)
         else:

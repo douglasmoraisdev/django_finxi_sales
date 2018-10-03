@@ -30,6 +30,7 @@ function update_proc_status() {
                     
                 let percent = status.current;
 
+
                 // Success or Pending
                 if (typeof status === 'string' || status instanceof String) {
 
@@ -46,6 +47,12 @@ function update_proc_status() {
                         modal_complete.open();
                         $("#" + pid).remove();
                     }
+
+                    if (status == 'ERROR') {
+
+                        $("#proc_queue li#" + pid).remove();
+                        percent = 100;
+                    }                    
 
                 }                
 
