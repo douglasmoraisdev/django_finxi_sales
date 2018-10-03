@@ -135,6 +135,11 @@ function import_file(form) {
         dataType: 'json',
         success: function (data) {
 
+            /** Clear fields */
+            $('#id_company_name').val('');
+            $('#sales_file').val('');
+            $('#sales_file_input').val('');
+
             /** Show success Modal */
             var modal_success = M.Modal.getInstance(import_success_modal);
             modal_success.open();
