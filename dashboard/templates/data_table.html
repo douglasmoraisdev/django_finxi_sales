@@ -1,9 +1,10 @@
 <table id="query_table" class="responsive-table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Item Name</th>
-            <th>Item Price</th>
+            <th>Product</th>
+            <th>Total Sold</th>
+            <th>Sale Price AVG</th>
+            <th>Cost Price AVG</th>
         </tr>
     </thead>
 
@@ -11,8 +12,9 @@
         {% for item in data %}
         <tr>
             <td>{{ item.product }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.total }}</td>
+            <td>{{ item.total_sold }}</td>
+            <td>{{ item.sale_price_avg }}</td>
+            <td>{{ item.cost_price_avg }}</td>
         </tr>
         {% endfor %}
     </tbody>

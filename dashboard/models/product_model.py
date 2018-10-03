@@ -7,4 +7,7 @@ class ProductModel(models.Model):
     name = models.CharField(max_length=100)
     cost_price = models.FloatField()
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE,
-                                                blank=False, null=False)
+                                 blank=False, null=False)
+
+    def __str__(self):
+        return self.name + ' - ' + self.category.name

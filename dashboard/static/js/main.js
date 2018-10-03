@@ -161,7 +161,7 @@ function search_filter(form) {
 
     
     
-    $('#import_preloader').removeClass("hide").addClass("show");
+    $('#data_table_preloader').removeClass("hide").addClass("show");
     
     var formData = new FormData(form);
     /** Validate inputs */
@@ -180,12 +180,16 @@ function search_filter(form) {
         data: formData,
         success: function (data) {
 
-            console.log(data);
+            //return new Promise(resolve => setTimeout(resolve, 2));
+
+            $('#data_table_preloader').removeClass("show").addClass("hide");
 
             $('#data_table').html(data);
   
         },
         error: function (data) {
+            alert('A wild error appear');
+            $('#data_table_preloader').removeClass("show").addClass("hide");
         },
         cache: false,
         contentType: false,

@@ -6,9 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
 
-
-from dashboard.models import ProductModel
-
+from dashboard.models import ProductModel, SalesModel
 from dashboard.forms import FileImportForm
 
 
@@ -20,12 +18,18 @@ class FilterSalesView(View):
 
         company = request.POST['company']
 
+        use_category = 'use_category' in request.POST
+        use_product = 'use_product' in request.POST
+
         if 'product_name' in request.POST:
             product_name = request.POST['product_name']
-        use_product = 'use_product' in request.POST
-        use_category = 'use_category' in request.POST
+        else:
+            product_name = ''
 
-        category = request.POST.getlist('category')
+        if 'category' in request.POST:
+            category = request.POST.getlist('category')
+        else:
+            category = ''
 
         """
         print("company [%s]" % company)
@@ -34,23 +38,36 @@ class FilterSalesView(View):
         print("category [%s]" % category)
         print("use_category [%s]" % use_category)
         """
+        sales_filter = SalesModel.manager.get_sales_by_filters(company=company,
+                                                      filter_product=use_product,
+                                                      product_name=product_name,
+                                                      filter_category=use_category,
+                                                      category=category)
+        print(sales_filter)
 
-        # Loads the query according switch_filters - INITIAL
-        if (use_product):
-            res = ProductModel.objects.filter(category__company=company)
-        else:
-            res = ProductModel.objects.filter(category__company=company,
-                                              category__in=category)
+        result = []
+        for items in sales_filter:
+            result.append(dict(
+                product=items.product.name,
+                total_sold=items.unit_sales,
+                sale_price_avg=items.sale_total,
+                cost_price_avg=items.product.cost_price
+            ))
 
-        print('total products for [%s]-%s: %d' % (company, category,
-                                                  res.count()))
-
-        price = random.randrange(1, 10)
-        total = random.randrange(13, 120)
-        data = [dict(product="abacate9", price=price+3, total=total+3),
-                dict(product="abacate3", price=price+4, total=total+4),
-                dict(product="abacate2", price=price+5, total=total+5),
-                dict(product="abacate3", price=price+2, total=total+2),
+        """Mock data"""
+        '''
+        total_sold = random.randrange(1, 10)
+        sale_price_avg = random.randrange(13, 120)
+        cost_price_avg = random.randrange(43, 520)
+        data = [dict(product="abacate9", total_sold=total_sold+3, 
+                     sale_price_avg=sale_price_avg+3, cost_price_avg=cost_price_avg+8),
+                dict(product="abacate3", total_sold=total_sold+4, 
+                     sale_price_avg=sale_price_avg+4, cost_price_avg=cost_price_avg+9),
+                dict(product="abacate2", total_sold=total_sold+5, 
+                     sale_price_avg=sale_price_avg+5, cost_price_avg=cost_price_avg+2),
+                dict(product="abacate3", total_sold=total_sold+2, 
+                     sale_price_avg=sale_price_avg+2, cost_price_avg=cost_price_avg+4),
                 ]
+        '''
 
-        return render(request, 'data_table.html', context={'data': data})
+        return render(request, 'data_table.html', context={'data': result})
