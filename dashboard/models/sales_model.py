@@ -44,14 +44,17 @@ class SalesManager(models.Manager):
                                               .filter(product__category__in=category_name))
 
     def _get_sales_by_product_category(self, company, product_name, category_name):
+
         return self._apply_sales_aggregations(self._default_company_filter(company)\
                                               .filter(product__name=product_name)\
                                               .filter(product__category__in=category_name))
 
     def _default_company_filter(self, company):
+
         return super().get_queryset().filter(product__category__company=company)
 
     def _apply_sales_aggregations(self, query_set):
+        
         return query_set.values('product__name')\
                         .annotate(total_sold=models.Sum('unit_sales'))\
                         .annotate(avg_sales=models.Avg('sale_total'))\

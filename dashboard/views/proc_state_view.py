@@ -7,44 +7,6 @@ from celery.task.control import inspect
 
 from dashboard.forms import FileImportForm
 
-
-def index(request):
-    """A view to receive a POST example"""
-    """DEPRECATED"""
-
-    if request.method == 'POST':
-
-        form = FileImportForm(request.POST)
-
-        if form.is_valid():
-
-            x = int(form['x_value'].value())
-
-            form.calc(x)
-
-            task_inspect = inspect()
-
-            for keys in task_inspect.active().keys():
-                active_tasks = task_inspect.active()[keys]
-                next_tasks = task_inspect.reserved()[keys]
-
-            pid_list = []
-
-            # get 'id' attribute from tasks lists
-            pid_list = map(lambda x: x['id'], active_tasks + next_tasks)
-
-            result = dict(pid_list=pid_list)
-
-            return JsonResponse(result)
-
-            # return render(request, 'index.html', {'proc_list': pid_list,
-            #                                      'form': form})
-    else:
-        form = FileImportForm()
-
-    return render(request, 'index.html', {'form': form})
-
-
 def proc_state(request):
     """ A view to report the progress to the user """
     if 'job' in request.GET:

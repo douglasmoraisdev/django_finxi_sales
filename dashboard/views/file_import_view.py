@@ -13,7 +13,7 @@ class FileImportView(FormView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        
+
         company_name = request.POST['company_name']
         file = request.FILES['sales_file']
 
@@ -42,7 +42,6 @@ class FileImportView(FormView):
 
         return JsonResponse(result)
 
-        # return super().form_valid(form)
 
     def form_invalid(self, form):
         response = super().form_invalid(form)

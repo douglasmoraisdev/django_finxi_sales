@@ -12,6 +12,8 @@
     <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.datatables.net/1.10.19/css/dataTables.material.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static "css/main.css" %}" />
 
+    <link rel="shortcut icon" type="image/png" href="{% static "/favicon.ico" %}"/>
+
     
     <script src="{% static "js/jquery.js" %}"></script>
     <script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -52,13 +54,16 @@
 <script>
 
     $(document).ready(function () {
+        /** Initialize Materialize Components */
         $('.tabs').tabs();
-        $('select#company').formSelect();
+        $('select#company').formSelect();        
         $('select#category').formSelect();
         $('#import_success_modal').modal();
         $('#import_fail_modal').modal();
         $('#import_complete_modal').modal();
 
+
+        /** Trigger the File Process Monitoring*/
         setInterval('update_proc_status()', 500);
     });
 

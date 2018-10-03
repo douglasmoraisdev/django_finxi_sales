@@ -4,8 +4,6 @@ from django import forms
 from dashboard.tasks import ProcessFile
 from django.core.serializers import serialize, deserialize
 
-from openpyxl import load_workbook
-
 
 class FileImportForm(forms.Form):
     company_name = forms.CharField(max_length=50)

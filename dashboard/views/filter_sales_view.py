@@ -12,29 +12,36 @@ from dashboard.forms import FileImportForm
 
 class FilterSalesView(View):
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
-        company = request.POST['company']
+        company = request.GET['company']
 
-        use_category = 'use_category' in request.POST
-        use_product = 'use_product' in request.POST
+        # Retrieve Filters
+        if 'use_product' in request.GET:
+            use_product = (request.GET['use_product'] == 'on')
 
-        if 'product_name' in request.POST:
-            product_name = request.POST['product_name']
+        if 'use_category' in request.GET:
+            use_category = (request.GET['use_category'] == 'on')            
+
+        if 'product_name' in request.GET:
+            product_name = request.GET['product_name']
+            if product_name == '':
+                use_product = False
         else:
-            product_name = ''
+            use_product = False
 
-        if 'category' in request.POST:
-            category = request.POST.getlist('category')
+        if 'category' in request.GET:            
+            category = request.GET['category'].split(',')
+            if category == ['']:
+                use_category = False
         else:
-            category = ''
+            use_category = False
 
         sales_filter = SalesModel.manager.get_sales_by_filters(company=company,
                                                       filter_product=use_product,
                                                       product_name=product_name,
                                                       filter_category=use_category,
                                                       category=category)
-        print(sales_filter)
 
         result = []
         for items in sales_filter:

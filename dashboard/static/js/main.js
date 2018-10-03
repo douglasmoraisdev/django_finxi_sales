@@ -98,21 +98,33 @@ function switch_filters(elem){
 function import_file(form) {
     /**
      * Handle Import Form Submit
-     */
-
-    
+     */   
     
     $('#import_preloader').removeClass("hide").addClass("show");
     
-    var formData = new FormData(form);
+    let formData = new FormData(form);
+    
     /** Validate inputs */
+    let formValid = true;
+    if (form.company_name.value == ""){
+        $('#import_preloader').removeClass("show").addClass("hide");       
+        $(form.company_name).removeClass("valid").addClass("invalid");
 
-    if ((form.sales_file.value == "") || (form.company_name.value == "")){
+        formValid = false;
+    }
+
+    if (form.sales_file_input.value == ""){
         $('#import_preloader').removeClass("show").addClass("hide");
-        alert("Please, fill all fields!");
+        $(form.sales_file_input).removeClass("valid").addClass("invalid");
+     
+        formValid = false;
+    }
+
+    if (!(formValid)){
         return
     }
 
+    /** Send the file via ajax  */
     $.ajax({
         url: "http://localhost:8000/dashboard/import/",
         type: 'POST',
@@ -156,28 +168,37 @@ function refresh_proc_list(items){
 
 function search_filter(form) {
     /**
-     * Handle Import Form Submit
+     * Handle Search Filter submit
      */
-
     
     
     $('#data_table_preloader').removeClass("hide").addClass("show");
     
     var formData = new FormData(form);
-    /** Validate inputs */
 
-    /*
-    if ((form.sales_file.value == "") || (form.company_name.value == "")){
-        $('#import_preloader').removeClass("show").addClass("hide");
-        alert("Please, fill all fields!");
+    let company = form.company.value;
+    let product_name = form.product_name.value;
+    let category = $('#category').val();
+    let use_category = $('#use_category:checked').val();
+    let use_product = $('#use_product:checked').val();
+
+    /** Validate inputs */
+    let formValid = true;
+    if (form.company.value == ""){
+        $('#import_preloader').removeClass("show").addClass("hide");       
+        $('#company_empty').removeClass("valid").addClass("invalid");
+
+        alert('Please, select a company')
         return
     }
-    */
 
     $.ajax({
-        url: "http://localhost:8000/dashboard/filter/",
-        type: 'POST',
-        data: formData,
+        url: "http://localhost:8000/dashboard/filter/?company="+company+
+                                                     "&product_name="+product_name+
+                                                     "&category="+category+
+                                                     "&use_category="+use_category+
+                                                     "&use_product="+use_product,
+        type: 'GET',
         success: function (data) {
 
             //Scroll to Results
