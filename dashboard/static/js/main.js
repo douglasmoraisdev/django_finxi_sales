@@ -180,10 +180,15 @@ function search_filter(form) {
         data: formData,
         success: function (data) {
 
-            //return new Promise(resolve => setTimeout(resolve, 2));
+            //Scroll to Results
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#results_ss").offset().top
+            }, 1000);
 
+            //Hide preloader
             $('#data_table_preloader').removeClass("show").addClass("hide");
 
+            //Populate data
             $('#data_table').html(data);
   
         },

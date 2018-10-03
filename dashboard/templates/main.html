@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>File Import</title>
+    <title>Sales Dashboard - Finxi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" media="screen" href="{% static "materialize/css/materialize.min.css" %}" />
@@ -58,7 +58,6 @@
         $('#import_success_modal').modal();
         $('#import_fail_modal').modal();
         $('#import_complete_modal').modal();
-
 
         setInterval('update_proc_status()', 500);
     });

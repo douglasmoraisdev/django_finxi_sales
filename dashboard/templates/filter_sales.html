@@ -65,24 +65,29 @@
 
     <div class="row center-align">
 
-
-            <button class="btn waves-effect waves-light" type="button" 
+        
+            <a id="link_result_ss" name="link_result_ss" href="#results_ss" hidden></a>
+            <button class="btn waves-effect waves-light" type="button"
                     onclick="search_filter(filter_form)" name="action">Search
                 <i class="material-icons right">search</i>
-            </button>        
+            </button>
 
     </div>
 </form>
-<div class="row center-align">
-    <h2>Results:</h2>
-    <p>Company: <b>Tabajara Corp.</b></p>
-    <div class="col l1"></div>
-    <div class="col l10" id="data_table">
+<div id="results_ss" class="section scrollspy">
 
+    <div class="row center-align">
+        <h2>Results:</h2>
+        <p>Company: <b>Tabajara Corp.</b></p>
+        <div class="col l1"></div>
+        <div class="col l10" id="data_table">
+
+        </div>
+
+        <div class="col l1"></div>    
     </div>
-
-    <div class="col l1"></div>    
 </div>
+
 <div class="row center-align">
     <div class="preloader-wrapper small active hide" id="data_table_preloader">
         <div class="spinner-layer spinner-green-only">
