@@ -60,6 +60,10 @@ class ProcessFile(Task):
         rows = []
         for cells in sheet_ranges:
 
+            # ignore file header
+            if cells[0].value.lower() == 'produto':
+                continue
+
             # verify cost_price is a number
             cost_price = cells[3].value.replace('R$ ', '')\
                                        .replace(',','.')

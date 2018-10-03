@@ -45,11 +45,16 @@ class FilterSalesView(View):
 
         result = []
         for items in sales_filter:
+
+            # Format monetary values
+            avg_sales = 'R$ %.2f' % items['avg_sales']
+            avg_cost = 'R$ %.2f' % items['avg_cost']
+
             result.append(dict(
                 product=items['product__name'],
                 total_sold=items['total_sold'],
-                sale_price_avg=items['avg_sales'],
-                cost_price_avg=items['avg_cost']
+                sale_price_avg=avg_sales,
+                cost_price_avg=avg_cost,
             ))
 
         return render(request, 'data_table.html', context={'data': result})
