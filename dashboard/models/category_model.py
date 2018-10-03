@@ -8,4 +8,4 @@ class CategoryModel(models.Model):
                                                 blank=False, null=False)
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + self.company.name

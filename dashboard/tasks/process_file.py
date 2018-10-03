@@ -60,9 +60,26 @@ class ProcessFile(Task):
         rows = []
         for cells in sheet_ranges:
 
+            # ignore empty cells
+            if cells is None:
+                continue
+            
+            if cells[0].value is None:
+                continue
+
             # ignore file header
             if cells[0].value.lower() == 'produto':
                 continue
+
+            # ignore any value empty rows
+            if ((str(cells[0].value).strip() == '') or
+                    (str(cells[1].value).strip() == '') or
+                    (str(cells[2].value).strip() == '') or
+                    (str(cells[3].value).strip() == '') or
+                    (str(cells[4].value).strip() == '')):
+                continue
+
+
 
             # verify cost_price is a number
             cost_price = cells[3].value.replace('R$ ', '')\
@@ -128,7 +145,7 @@ class ProcessFile(Task):
         for cat in filtered_category:
             if CategoryModel.objects.filter(name=cat, company=company)\
                                      .exists():
-                category_id = CategoryModel.objects.get(name=cat).id
+                category_id = CategoryModel.objects.get(name=cat, company=company).id
             else:
                 category = CategoryModel()
                 category.name = str(cat)
@@ -148,7 +165,8 @@ class ProcessFile(Task):
 
                     # update product if not exists
                     if not ProductModel.objects.filter(name=product_name,
-                                                       category__name=cat)\
+                                                       category__name=cat,\
+                                                       category__company=company)\
                                                .exists():
 
                         # print('Adding Product %s' % product_name)
@@ -160,13 +178,11 @@ class ProcessFile(Task):
                         product_id = product.id
                     else:
                         product = ProductModel.objects.get(name=product_name,
-                                                           category__name=cat)
+                                                           category__name=cat,\
+                                                           category__company=company)
                         product_id = product.id
 
                     # update sales
-
-                    # update sales if not exists
-                    # if not SalesModel.objects.filter(product=product).exists():
                     # print('Added Sale %s' % product)
                     sales = SalesModel()
                     sales.product = product
