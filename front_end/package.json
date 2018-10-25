@@ -1,0 +1,25 @@
+{
+  "name": "finxi_sales_fe",
+  "version": "1.0.0",
+  "description": "Finxi Sales Dashboard Front End App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/douglasmoraisdev/django_finxi_sales.git"
+  },
+  "keywords": [
+    "react",
+    "python",
+    "django",
+    "celery"
+  ],
+  "author": "Douglas Morais dos Santos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/douglasmoraisdev/django_finxi_sales/issues"
+  },
+  "homepage": "https://github.com/douglasmoraisdev/django_finxi_sales#readme"
+}
