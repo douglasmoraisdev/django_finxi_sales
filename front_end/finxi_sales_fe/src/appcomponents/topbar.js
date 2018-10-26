@@ -11,7 +11,7 @@ const styles = {
   },
 };
 
-function SimpleAppBar(props) {
+function TopBar(props) {
   const { classes } = props;
 
   return (
@@ -19,16 +19,17 @@ function SimpleAppBar(props) {
       <AppBar position="static" color="default">
         <Toolbar>
           <Typography variant="h6" color="inherit">
-            Photos
+            Sales Dashboard
           </Typography>
         </Toolbar>
+        {props.children}
       </AppBar>
     </div>
   );
 }
 
-SimpleAppBar.propTypes = {
+TopBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleAppBar);
+export default withStyles(styles)(TopBar);
